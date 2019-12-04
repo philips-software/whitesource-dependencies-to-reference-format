@@ -1,4 +1,4 @@
-# Contributing to blackduck-dependencies-to-reference-format 
+# Contributing to whitesource-dependencies-to-reference-format 
 
 We'd love for you to contribute to our source code and to make this tool even better than it is today! Here are the guidelines we'd like you to follow:
 
@@ -134,5 +134,5 @@ Use the badge to sign-up.
 [![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
 
 [contribute]: CONTRIBUTING.md
-[github]: https://github.com/philips-software/blackduck-dependencies-to-reference-format/issues 
+[github]: https://github.com/philips-software/whitesource-dependencies-to-reference-format/issues 
 [slack]: https://philips-software.slack.com/home
