@@ -1,0 +1,16 @@
+{
+  "libraries":[
+    {
+      "keyUuid":"keyUuid-0",
+      "type":"Unknown Library",
+      "productName":"product-1",
+      "projectName":"project-3",
+      "directDependency":true,
+      "matchType":"Exact Match",
+      "sha1":"sha-key-0",
+      "name":"fixtures.tgz",
+      "artifactId":"fixtures.tgz",
+      "licenses":[{"name":"Unspecified License","references":[]}]
+    }
+  ]
+}

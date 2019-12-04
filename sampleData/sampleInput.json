@@ -1,0 +1,64 @@
+{
+  "libraries":[
+    {
+      "keyUuid": "keyUuid-1",
+      "type": "javascript/Node.js",
+      "productName": "product-1",
+      "projectName": "project-1",
+      "description": "JSON Schema validation and specifications",
+      "directDependency": false,
+      "matchType": "Filename Match",
+      "sha1": "sha-value-1",
+      "name": "json-schema-0.2.3.tgz",
+      "artifactId": "json-schema-0.2.3.tgz",
+      "version": "0.2.3",
+      "groupId": "json-schema",
+      "licenses": [{ "name": "Academic 2.1", "references": [] }, { "name": "BSD", "references": [] }, { "name": "BSD 3", "references": [] }]
+    },
+    {
+      "keyUuid": "keyUuid-2",
+      "type": "Unknown Library",
+      "productName": "product-1",
+      "projectName": "project-1",
+      "description": "",
+      "directDependency": true,
+      "matchType": "Exact Match",
+      "sha1": "sha-value-2",
+      "name": "webassemblyjs-wasm-parser-1.7.10.tgz",
+      "artifactId": "webassemblyjs-wasm-parser-1.7.10.tgz",
+      "version": "",
+      "groupId": "",
+      "licenses": [{ "name": "MIT", "references": [] }]
+    },
+    {
+      "keyUuid": "keyUuid-3",
+      "type": "Java",
+      "productName": "product-1",
+      "projectName": "project-2",
+      "description": "A set of annotations used for code inspection support and code documentation.",
+      "directDependency": false,
+      "matchType": "Exact Match",
+      "sha1": "sha-value-3",
+      "name": "annotations-13.0.jar",
+      "artifactId": "annotations",
+      "version": "13.0",
+      "groupId": "org.jetbrains",
+      "licenses": [{ "name": "Apache 2.0", "references": [] }]
+    },
+    {
+      "keyUuid":"keyUuid-4",
+      "type":"Source Library",
+      "productName":"product-1",
+      "projectName":"project-2",
+      "description":"Node.js JavaScript runtime :sparkles::turtle::rocket::sparkles:",
+      "directDependency":true,
+      "matchType":"Best Match",
+      "sha1":"sha-value-4",
+      "name":"io.js",
+      "artifactId":"io.js",
+      "version":"v0.9.2",
+      "groupId":"iojs",
+      "licenses":[{"name":"MIT X11","references":[]},{"name":"BSD 3","references":[]},{"name":"GPL 2.0","references":[]}]
+    }
+  ]
+}
