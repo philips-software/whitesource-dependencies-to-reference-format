@@ -49,7 +49,8 @@ const logWhitesourceLibrariesWithEmptyVersion = ({ whitesourceLibraries }) => {
 }
 
 const readDependenciesToReferenceFormatAndWriteToFile = async ({ inputFile, dependenciesOutputFilename }) => {
-  const whitesourceInventoryJsonObj = require(inputFile)
+  const whitesourceInventoryTxt = fs.readFileSync(inputFile).toString()
+  const whitesourceInventoryJsonObj = JSON.parse(whitesourceInventoryTxt)
   const whitesourceLibraries = whitesourceInventoryJsonObj.libraries
   infoMessage(chalk`{blue ${whitesourceLibraries.length}} library elements read from the json file {blue ${input}}\n`)
 
