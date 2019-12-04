@@ -14,6 +14,9 @@ const everyElementHasAllKeys = ({ jsonArray, keys }) => {
       })
       return !elementHasAllKeys
     })
+  if (objectsMissingMandatoryKeys.length !== 0) {
+    console.warn(`The following elements are missing at least one of the mandatory keys ${keys}:\n ${JSON.stringify(objectsMissingMandatoryKeys)}`)
+  }
   return objectsMissingMandatoryKeys.length === 0
 }
 
