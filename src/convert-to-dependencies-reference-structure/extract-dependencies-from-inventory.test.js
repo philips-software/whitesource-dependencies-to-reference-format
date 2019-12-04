@@ -64,6 +64,39 @@ describe('extractDependenciesToReferenceFormat', () => {
         .toEqual(expectedOutput)
     })
 
+  it('returns a depenencies array containing the dependency name as it appears in whitesource\'s library name (unprocessed), if the version is not empty and the library name does not contain the -<version> substring',
+    () => {
+      const inputLibrariesVersionNotSubstringInName = [
+        {
+          'keyUuid': 'keyUuid-0',
+          'type': 'Source Library',
+          'productName': 'product-1',
+          'projectName': 'project-3',
+          'description': 'Node.js JavaScript runtime :sparkles::turtle::rocket::sparkles:',
+          'directDependency': true,
+          'matchType': 'Best Match',
+          'sha1': 'sha-value-0',
+          'name': 'io.js',
+          'artifactId': 'io.js',
+          'version': 'v0.9.2',
+          'groupId': 'iojs',
+          'licenses': [{ 'name': 'MIT X11', 'references': [] }, { 'name': 'BSD 3', 'references': [] }, { 'name': 'GPL 2.0', 'references': [] }]
+        }
+      ]
+      const expectedOutput = [
+        {
+          name: 'io.js',
+          version: 'v0.9.2'
+        }
+      ]
+      const actualOutput = depsExtractor.extractDependenciesToReferenceFormat({
+        whitesourceLibraries: inputLibrariesVersionNotSubstringInName
+      })
+      expect(actualOutput)
+        .toEqual(expectedOutput)
+    }
+  )
+
   it('returns an array of dependencies (name, version) with the (unprocessed) name as it appears in whitesource, if the version is empty',
     () => {
       const inputWithEmptyVersion = [
