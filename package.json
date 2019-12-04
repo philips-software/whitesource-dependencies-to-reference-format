@@ -11,7 +11,7 @@
     "extract": "./src/cli-extract.js"
   },
   "author": "Sanda Contiu",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "jest": "^24.1.0",
