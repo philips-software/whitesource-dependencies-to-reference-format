@@ -54,7 +54,7 @@ const extractDependenciesToReferenceFormat = ({ whitesourceLibraries }) => {
   const mandatoryKeys = [ WHITESOURCE_INVENTORY_NAME_KEY, WHITESOURCE_INVENTORY_VERSION_KEY ]
 
   if (!utilities.everyElementHasAllKeys({ jsonArray: whitesourceLibraries, keys: mandatoryKeys })) {
-    errorMessage(chalk`There are objects {red missing at least one of the mandatory keys ${mandatoryKeys}}; returning empty array\n`)
+    errorMessage(chalk`There are objects {red missing at least one of the mandatory keys ${mandatoryKeys}}; please make sure they are present. Returning empty array\n`)
     return []
   }
 
