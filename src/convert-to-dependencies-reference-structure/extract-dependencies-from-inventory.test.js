@@ -339,7 +339,7 @@ describe('extractDependenciesToExtendedReferenceFormat', () => {
         }
       ]
       const expectedOutput = []
-      let actualOutput = depsExtractor.extractDependenciesToReferenceFormat({
+      let actualOutput = depsExtractor.extractDependenciesToExtendedReferenceFormat({
         whitesourceLibraries: inputMissingNameKey
 
       })
@@ -363,7 +363,7 @@ describe('extractDependenciesToExtendedReferenceFormat', () => {
           'licenses': [{ 'name': 'Academic 2.1', 'references': [] }, { 'name': 'BSD', 'references': [] }, { 'name': 'BSD 3', 'references': [] }]
         }
       ]
-      actualOutput = depsExtractor.extractDependenciesToReferenceFormat({
+      actualOutput = depsExtractor.extractDependenciesToExtendedReferenceFormat({
         whitesourceLibraries: inputMissingVersionKey
 
       })
@@ -387,7 +387,7 @@ describe('extractDependenciesToExtendedReferenceFormat', () => {
           'THIS_IS_NOT_THE_LICENSES_KEY': [{ 'name': 'Academic 2.1', 'references': [] }, { 'name': 'BSD', 'references': [] }, { 'name': 'BSD 3', 'references': [] }]
         }
       ]
-      actualOutput = depsExtractor.extractDependenciesToReferenceFormat({
+      actualOutput = depsExtractor.extractDependenciesToExtendedReferenceFormat({
         whitesourceLibraries: inputMissingLicenseKey
 
       })
