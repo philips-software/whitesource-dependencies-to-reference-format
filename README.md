@@ -4,7 +4,7 @@ Extracts dependencies from the inventory report json artifact of tool Whitesourc
 
 Outputs the following file(s): 
   - __dependencies.json__ contains the dependencies extracted from the inventory file, in a reference format. This reference format is a JSON file containing arrays of objects with keys _name_ and _version_. It contains unique objects by the combination _name_ and _version_
-  - (optional, if the licenses flag was set) __dependencies_with_licenses.json__ - contains the dependencies extracted from the inventory file, in an extended reference format, which includes an array of _licenses_ per each dependency, besides the dependency _name_ and _version_.
+  - (optional, if the licenses flag was set) __dependencies_with_extended_info.json__ - contains the dependencies extracted from the inventory file, in an extended reference format, which includes an array of _licenses_ per each dependency, besides the dependency _name_ and _version_.
 
 ### Preconditions
 The  inventory whitesource report is expected to contain keys _name_ and _version_ for every element in the inventory.
@@ -42,7 +42,7 @@ yarn extract [options]
 | Flag                 | Alias | Functionality
 | ---------------------|:-----:| -------------------------------------
 | --input [filename]   |  -i   | (mandatory) Filename of the Whitesource inventory report file to extract dependencies from.
-| --licenses           |       | Flag to signal wheter to additionally extract license names from the Whitesource inventory report (to output file dependencies_with_licenses.json).
+| --licenses           |       | Flag to signal wheter to additionally extract license names from the Whitesource inventory report (to output file dependencies_with_extended_info.json).
 | --output [filename]|  -o   | (optional) Filename to which the list of dependencies (name+version) is written (json format). If the file already exists, it will be overwritten. Default value: dependencies.json
 | --verbose          |       | Verbose output of commands and errors
 | --help             | -h    | Displays usage information
