@@ -1,0 +1,20 @@
+{
+  "libraries":[
+    {
+      "keyUuid":"keyUuid-0",
+      "type":"Unknown Library",
+      "productName":"product name",
+      "projectName":"project name",
+      "description":"",
+      "directDependency":true,
+      "matchType":"Exact Match",
+      "sha1":"some-sha-value",
+      "name":"webassemblyjs-wasm-parser-1.7.10.tgz",
+      "artifactId":"webassemblyjs-wasm-parser-1.7.10.tgz",
+      "version":"1.7.10",
+      "groupId":"",
+      "licenses":[{"name":"MIT","references":[]}
+      ]
+    }
+  ]
+}
