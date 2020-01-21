@@ -1,2 +1,3 @@
 exports.REFERENCE_OUTPUT_NAME_KEY = 'name'
 exports.REFERENCE_OUTPUT_VERSION_KEY = 'version'
+exports.REFERENCE_OUTPUT_LICENSES_KEY = 'licenses'

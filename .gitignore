@@ -15,4 +15,4 @@ yarn-error.log*
 
 # output 
 dependencies.json
-dependencies_with_licenses.json
+dependencies_with_extended_info.json

@@ -12,6 +12,7 @@ const {
 } = require('./logger/logger')
 const { hasFileExtension } = require('./file-validators/file-extension-validator')
 const dependenciesExtractor = require('./convert-to-dependencies-reference-structure/extract-dependencies-from-inventory')
+const dependenciesWithLicensInfoFilename = 'dependencies_with_extended_info.json'
 
 program
   .version('0.0.1', '-v, --version')
@@ -19,12 +20,16 @@ program
     '-i, --input [file]',
     '(mandatory) specifies the inventory json filename which contains the dependencies as identified by Whitesource'
   )
+  .option(
+    '--licenses',
+    '(optional) if present, then an additional extended sbom file is created with the licenses as identified by Whitesource, dependencies_with_extendedInfo.json'
+  )
   .option('-o, --output [filename]', '(optional) specifies the output filename', 'dependencies.json')
   .option('--verbose', '(optional) Verbose output of commands and errors')
 
   .parse(process.argv)
 
-const { input, output, verbose } = program
+const { input, licenses, output, verbose } = program
 
 const areCliInputParametersValid = ({ input }) => {
   if (!input) {
@@ -48,39 +53,71 @@ const logWhitesourceLibrariesWithEmptyVersion = ({ whitesourceLibraries }) => {
   }
 }
 
-const readDependenciesToReferenceFormatAndWriteToFile = async ({ inputFile, dependenciesOutputFilename }) => {
+const extractDependenciesToBasicReferenceFormatAndWriteToFile = async ({ whitesourceLibraries, basicSbomOutputFilename }) => {
+  const wsDependenciesInReferenceFormat = dependenciesExtractor.extractDependenciesToReferenceFormat({ whitesourceLibraries })
+  infoMessage(
+    chalk`Writing {blue ${wsDependenciesInReferenceFormat.length}} elements unique by keys name and version to {blue ${basicSbomOutputFilename}}\n`
+  )
+
+  try {
+    await fs.writeJSON(basicSbomOutputFilename, wsDependenciesInReferenceFormat, { spaces: 2, eol: '\n' })
+  } catch (e) {
+    errorMessage(chalk`Could not write to {blue ${basicSbomOutputFilename}}`, e)
+  }
+}
+
+const extractDependenciesToExtendedReferenceFormatAndWriteToFiles = async ({ whitesourceLibraries, basicSbomOutputFilename, extendedSbomOutputFilename }) => {
+  const sbomWithExtendedInfo = dependenciesExtractor.extractDependenciesToExtendedReferenceFormat({ whitesourceLibraries })
+  const sbomWithNameAndVersion = sbomWithExtendedInfo.map(extendedElem => {
+    return ({ name: extendedElem.name, version: extendedElem.version })
+  })
+
+  infoMessage(
+    chalk`Writing {blue ${sbomWithNameAndVersion.length}} elements unique by keys name and version to {blue ${basicSbomOutputFilename}}\n`
+  )
+  try {
+    await fs.writeJSON(basicSbomOutputFilename, sbomWithNameAndVersion, { spaces: 2, eol: '\n' })
+  } catch (e) {
+    errorMessage(chalk`Could not write to {blue ${basicSbomOutputFilename}}`, e)
+  }
+
+  infoMessage(
+    chalk`Writing {blue ${sbomWithExtendedInfo.length}} elements (keys name, version, licenses) to {blue ${extendedSbomOutputFilename}}\n`
+  )
+  try {
+    await fs.writeJSON(extendedSbomOutputFilename, sbomWithExtendedInfo, { spaces: 2, eol: '\n' })
+  } catch (e) {
+    errorMessage(chalk`Could not write to {blue ${extendedSbomOutputFilename}}`, e)
+  }
+}
+
+const readDependenciesToReferenceFormatAndWriteToFile = async ({ inputFile, mustExtractLicenses, basicSbomOutputFilename, extendedSbomOutputFilename }) => {
   const whitesourceInventoryTxt = fs.readFileSync(inputFile).toString()
   const whitesourceInventoryJsonObj = JSON.parse(whitesourceInventoryTxt)
   const whitesourceLibraries = whitesourceInventoryJsonObj.libraries
   infoMessage(chalk`{blue ${whitesourceLibraries.length}} library elements read from the json file {blue ${input}}\n`)
 
   logWhitesourceLibrariesWithEmptyVersion({ whitesourceLibraries })
-  const wsDependenciesInReferenceFormat = dependenciesExtractor.extractDependenciesToReferenceFormat({ whitesourceLibraries })
-  infoMessage(
-    chalk`Writing {blue ${wsDependenciesInReferenceFormat.length}} elements unique by keys name and version to {blue ${dependenciesOutputFilename}}\n`
-  )
 
-  try {
-    await fs.writeJSON(dependenciesOutputFilename, wsDependenciesInReferenceFormat, { spaces: 2, eol: '\n' })
-  } catch (e) {
-    errorMessage(chalk`Could not write to {blue ${dependenciesOutputFilename}}`, e)
+  if (!mustExtractLicenses) {
+    await extractDependenciesToBasicReferenceFormatAndWriteToFile({ whitesourceLibraries, basicSbomOutputFilename })
+  } else {
+    await extractDependenciesToExtendedReferenceFormatAndWriteToFiles({ whitesourceLibraries, basicSbomOutputFilename, extendedSbomOutputFilename })
   }
-
-  return wsDependenciesInReferenceFormat
 }
 
 const processFiles = async () => {
   setVerbose(verbose)
 
   infoMessage(
-    chalk`extract\n Program arguments:\n    input: {blue ${input}}\n    output: {blue ${output}}\n      verbose: {blue ${verbose}}`
+    chalk`extract\n Program arguments:\n    input: {blue ${input}}\n      licenses: {blue ${licenses}}\n    output: {blue ${output}}\n      verbose: {blue ${verbose}}`
   )
 
   if (!areCliInputParametersValid({ input })) {
     return
   }
 
-  await readDependenciesToReferenceFormatAndWriteToFile({ inputFile: input, dependenciesOutputFilename: output })
+  await readDependenciesToReferenceFormatAndWriteToFile({ inputFile: input, mustExtractLicenses: licenses, basicSbomOutputFilename: output, extendedSbomOutputFilename: dependenciesWithLicensInfoFilename })
 }
 
 processFiles()
