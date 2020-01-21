@@ -18,6 +18,19 @@ const {
   WHITESOURCE_INVENTORY_LICENSES_KEY
 } = require('../constants/inventory-keys')
 
+const determineDependencyNameFromNameAndVersionKeys = ({ wsName, wsVersion }) => {
+  let name
+  const dashVersion = `-${wsVersion}`
+  const lastIndexOfDashVersion = wsName.lastIndexOf(dashVersion)
+  if (lastIndexOfDashVersion === -1) {
+    warningMessage(chalk`{yellow Could not find substring} '{red ${dashVersion}}' in library name {red ${wsName}}; extracting library name as is`)
+    name = wsName
+  } else {
+    name = wsName.slice(0, lastIndexOfDashVersion)
+  }
+  return name
+}
+
 const extractNameAndVersionFrom = ({ jsonObject }) => {
   const wsNameWithVersionAndExtension = jsonObject[WHITESOURCE_INVENTORY_NAME_KEY]
   const wsVersion = jsonObject[WHITESOURCE_INVENTORY_VERSION_KEY]
@@ -28,14 +41,7 @@ const extractNameAndVersionFrom = ({ jsonObject }) => {
   let name
 
   if (wsVersion !== '') {
-    const dashVersion = `-${wsVersion}`
-    const lastIndexOfDashVersion = wsNameWithVersionAndExtension.lastIndexOf(dashVersion)
-    if (lastIndexOfDashVersion === -1) {
-      warningMessage(chalk`{yellow Could not find substring} '{red ${dashVersion}}' in library name {red ${wsNameWithVersionAndExtension}}; extracting library name as is`)
-      name = wsNameWithVersionAndExtension
-    } else {
-      name = wsNameWithVersionAndExtension.slice(0, lastIndexOfDashVersion)
-    }
+    name = determineDependencyNameFromNameAndVersionKeys({ wsName: wsNameWithVersionAndExtension, wsVersion })
   } else {
     warningMessage(chalk`{yellow Empty version} found for library name {red ${wsNameWithVersionAndExtension}}; extracting library name as is`)
     name = wsNameWithVersionAndExtension
