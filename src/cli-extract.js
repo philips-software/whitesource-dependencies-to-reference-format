@@ -20,6 +20,7 @@ program
     '-i, --input [file]',
     '(mandatory) specifies the inventory json filename which contains the dependencies as identified by Whitesource'
   )
+  .option('--usegroup', '(optional) Extract the name of dependencies from the groupId keyvalue')
   .option(
     '--licenses',
     '(optional) if present, then an additional extended sbom file is created with the licenses as identified by Whitesource, dependencies_with_extendedInfo.json'
@@ -29,7 +30,7 @@ program
 
   .parse(process.argv)
 
-const { input, licenses, output, verbose } = program
+const { input, licenses, output, verbose, usegroup } = program
 
 const areCliInputParametersValid = ({ input }) => {
   if (!input) {
@@ -53,8 +54,8 @@ const logWhitesourceLibrariesWithEmptyVersion = ({ whitesourceLibraries }) => {
   }
 }
 
-const extractDependenciesToBasicReferenceFormatAndWriteToFile = async ({ whitesourceLibraries, basicSbomOutputFilename }) => {
-  const wsDependenciesInReferenceFormat = dependenciesExtractor.extractDependenciesToReferenceFormat({ whitesourceLibraries })
+const extractDependenciesToBasicReferenceFormatAndWriteToFile = async ({ whitesourceLibraries, readNameFromGroupId, basicSbomOutputFilename }) => {
+  const wsDependenciesInReferenceFormat = dependenciesExtractor.extractDependenciesToReferenceFormat({ whitesourceLibraries, readNameFromGroupId })
   infoMessage(
     chalk`Writing {blue ${wsDependenciesInReferenceFormat.length}} elements unique by keys name and version to {blue ${basicSbomOutputFilename}}\n`
   )
@@ -66,8 +67,8 @@ const extractDependenciesToBasicReferenceFormatAndWriteToFile = async ({ whiteso
   }
 }
 
-const extractDependenciesToExtendedReferenceFormatAndWriteToFiles = async ({ whitesourceLibraries, basicSbomOutputFilename, extendedSbomOutputFilename }) => {
-  const sbomWithExtendedInfo = dependenciesExtractor.extractDependenciesToExtendedReferenceFormat({ whitesourceLibraries })
+const extractDependenciesToExtendedReferenceFormatAndWriteToFiles = async ({ whitesourceLibraries, readNameFromGroupId, basicSbomOutputFilename, extendedSbomOutputFilename }) => {
+  const sbomWithExtendedInfo = dependenciesExtractor.extractDependenciesToExtendedReferenceFormat({ whitesourceLibraries, readNameFromGroupId })
   const sbomWithNameAndVersion = sbomWithExtendedInfo.map(extendedElem => {
     return ({ name: extendedElem.name, version: extendedElem.version })
   })
@@ -91,7 +92,7 @@ const extractDependenciesToExtendedReferenceFormatAndWriteToFiles = async ({ whi
   }
 }
 
-const readDependenciesToReferenceFormatAndWriteToFile = async ({ inputFile, mustExtractLicenses, basicSbomOutputFilename, extendedSbomOutputFilename }) => {
+const readDependenciesToReferenceFormatAndWriteToFile = async ({ inputFile, mustExtractLicenses, readNameFromGroupId = false, basicSbomOutputFilename, extendedSbomOutputFilename }) => {
   const whitesourceInventoryTxt = fs.readFileSync(inputFile).toString()
   const whitesourceInventoryJsonObj = JSON.parse(whitesourceInventoryTxt)
   const whitesourceLibraries = whitesourceInventoryJsonObj.libraries
@@ -100,9 +101,9 @@ const readDependenciesToReferenceFormatAndWriteToFile = async ({ inputFile, must
   logWhitesourceLibrariesWithEmptyVersion({ whitesourceLibraries })
 
   if (!mustExtractLicenses) {
-    await extractDependenciesToBasicReferenceFormatAndWriteToFile({ whitesourceLibraries, basicSbomOutputFilename })
+    await extractDependenciesToBasicReferenceFormatAndWriteToFile({ whitesourceLibraries, readNameFromGroupId, basicSbomOutputFilename })
   } else {
-    await extractDependenciesToExtendedReferenceFormatAndWriteToFiles({ whitesourceLibraries, basicSbomOutputFilename, extendedSbomOutputFilename })
+    await extractDependenciesToExtendedReferenceFormatAndWriteToFiles({ whitesourceLibraries, readNameFromGroupId, basicSbomOutputFilename, extendedSbomOutputFilename })
   }
 }
 
@@ -110,14 +111,15 @@ const processFiles = async () => {
   setVerbose(verbose)
 
   infoMessage(
-    chalk`extract\n Program arguments:\n    input: {blue ${input}}\n      licenses: {blue ${licenses}}\n    output: {blue ${output}}\n      verbose: {blue ${verbose}}`
+    chalk`extract\n Program arguments:\n    input: {blue ${input}}\n      licenses: {blue ${licenses}}\n    output: {blue ${output}}\n      usegroup: {blue ${usegroup}}\n      verbose: {blue ${verbose}}`
   )
 
   if (!areCliInputParametersValid({ input })) {
     return
   }
 
-  await readDependenciesToReferenceFormatAndWriteToFile({ inputFile: input, mustExtractLicenses: licenses, basicSbomOutputFilename: output, extendedSbomOutputFilename: dependenciesWithLicensInfoFilename })
+  const readNameFromGroupId = usegroup || false
+  await readDependenciesToReferenceFormatAndWriteToFile({ inputFile: input, mustExtractLicenses: licenses, readNameFromGroupId, basicSbomOutputFilename: output, extendedSbomOutputFilename: dependenciesWithLicensInfoFilename })
 }
 
 processFiles()
