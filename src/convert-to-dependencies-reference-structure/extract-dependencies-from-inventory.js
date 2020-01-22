@@ -83,7 +83,7 @@ const extractDependenciesToReferenceFormat = ({ whitesourceLibraries, readNameFr
   }
 
   let mandatoryKeys = [ WHITESOURCE_INVENTORY_NAME_KEY, WHITESOURCE_INVENTORY_VERSION_KEY ]
-  if(readNameFromGroupId){
+  if (readNameFromGroupId) {
     mandatoryKeys = [ WHITESOURCE_INVENTORY_GROUPID_KEY ]
   }
 
@@ -93,10 +93,10 @@ const extractDependenciesToReferenceFormat = ({ whitesourceLibraries, readNameFr
   }
 
   const dependenciesInReferenceFormat = whitesourceLibraries.map(element => {
-    if(readNameFromGroupId){
+    if (readNameFromGroupId) {
       return extractGroupIdAsNameAndVersionFrom({ jsonObject: element })
     } else {
-      return extractNameAndVersionFrom( { jsonObject: element })
+      return extractNameAndVersionFrom({ jsonObject: element })
     }
   })
   const uniqueDependenciesInReferenceFormat = utilities.getUniquesByKeyValues({
@@ -113,7 +113,7 @@ const extractDependenciesToExtendedReferenceFormat = ({ whitesourceLibraries, re
   }
 
   let mandatoryKeys = [ WHITESOURCE_INVENTORY_NAME_KEY, WHITESOURCE_INVENTORY_VERSION_KEY, WHITESOURCE_INVENTORY_LICENSES_KEY ]
-  if(readNameFromGroupId){
+  if (readNameFromGroupId) {
     mandatoryKeys = [WHITESOURCE_INVENTORY_GROUPID_KEY, WHITESOURCE_INVENTORY_LICENSES_KEY]
   }
 
@@ -124,7 +124,7 @@ const extractDependenciesToExtendedReferenceFormat = ({ whitesourceLibraries, re
 
   const dependenciesInExtendedReferenceFormat = whitesourceLibraries.map(element => {
     let referenceObjectNameAndVersion
-    if(readNameFromGroupId){
+    if (readNameFromGroupId) {
       referenceObjectNameAndVersion = extractGroupIdAsNameAndVersionFrom({ jsonObject: element })
     } else {
       referenceObjectNameAndVersion = extractNameAndVersionFrom({ jsonObject: element })

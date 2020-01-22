@@ -43,12 +43,12 @@ yarn extract [options]
 | Flag                 | Alias | Functionality
 | ---------------------|:-----:| -------------------------------------
 | --input [filename]   |  -i   | (mandatory) Filename of the Whitesource inventory report file to extract dependencies from.
-| --licenses           |       | Flag to signal wheter to additionally extract license names from the Whitesource inventory report (to output file dependencies_with_extended_info.json).
-| --usegroup           |       | (optional) Extract the name of dependencies from the groupId keyvalue. If this flag is not set or is false, then dependency names are inferred from the Name keyvalue
-| --output [filename]|  -o   | (optional) Filename to which the list of dependencies (name+version) is written (json format). If the file already exists, it will be overwritten. Default value: dependencies.json
-| --verbose          |       | Verbose output of commands and errors
-| --help             | -h    | Displays usage information
-| --version          | -v    | Displays version number
+| --licenses           |       | (optional) Flag to signal wheter to additionally extract license names from the Whitesource inventory report (to output file dependencies_with_extended_info.json).
+| --usegroup           |       | (optional) Flag to signal wheter to extract the name of dependencies from the groupId keyvalue. If this flag is not set or is false, then dependency names are inferred from the Name keyvalue
+| --output [filename]  |  -o   | (optional) Filename to which the list of dependencies (name+version) is written (json format). If the file already exists, it will be overwritten. Default value: dependencies.json
+| --verbose            |       | (optional) Verbose output of commands and errors
+| --help               | -h    | (optional) Displays usage information
+| --version            | -v    | (optional) Displays version number
 
 
 
