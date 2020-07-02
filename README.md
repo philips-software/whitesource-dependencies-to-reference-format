@@ -1,4 +1,7 @@
 # whitesource-dependencies-to-reference-format
+
+> Note: :warning: If you're interested in Software Bill of Materials, you might also look into [Bompare](https://github.com/philips-labs/bompare)
+
 ## Description
 Extracts dependencies from the inventory report json artifact of tool Whitesource.
 
